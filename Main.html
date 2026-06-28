@@ -1,0 +1,400 @@
+import { useState } from "react";
+
+const Section = ({ label, children }) => (
+ <div style={{ marginBottom: "2.5rem" }}>
+ <div style={{
+ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem"
+ }}>
+ <div style={{
+ width: "3px", height: "1.5rem", background: "#00C2A8", borderRadius: "2px", flexShrink: 0
+ }} />
+ <span style={{
+ fontFamily: "'Inter', sans-serif",
+ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em",
+ textTransform: "uppercase", color: "#00C2A8"
+ }}>{label}</span>
+ </div>
+ {children}
+ </div>
+ );
+
+const Tag = ({ children, color = "#00C2A8" }) => (
+ <span style={{
+ display: "inline-block",
+ background: color + "18",
+ color: color,
+ border: `1px solid ${color}40`,
+ borderRadius: "4px",
+ fontSize: "0.72rem",
+ fontWeight: 600,
+ padding: "3px 10px",
+ marginRight: "6px",
+ marginBottom: "6px",
+ fontFamily: "'Inter', sans-serif",
+ letterSpacing: "0.03em"
+ }}>{children}</Tag>
+ );
+
+const Card = ({ icon, title, items, accent = "#00C2A8" }) => (
+ <div style={{
+ background: "#0F1923",
+ border: "1px solid #1E2D3D",
+ borderRadius: "10px",
+ padding: "1.25rem 1.5rem",
+ flex: "1 1 220px"
+ }}>
+ <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>{icon}</div>
+ <div style={{
+ fontFamily: "'Inter', sans-serif",
+ fontWeight: 700, fontSize: "0.85rem",
+ color: "#E8F4F1", marginBottom: "0.75rem", letterSpacing: "0.02em"
+ }}>{title}</div>
+ <ul style={{ margin: 0, paddingLeft: "1rem" }}>
+ {items.map((item, i) => (
+ <li key={i} style={{
+ fontFamily: "'Inter', sans-serif",
+ fontSize: "0.8rem", color: "#8BA9BE",
+ marginBottom: "0.35rem", lineHeight: 1.5
+ }}>{item}</li>
+ ))}
+ </ul>
+ </div>
+ );
+
+const FlowStep = ({ step, label, sub, isLast }) => (
+ <div style={{ display: "flex", alignItems: "center", gap: 0, flex: isLast ? "0 0 auto" : "1 1 auto" }}>
+ <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+ <div style={{
+ background: "#00C2A8",
+ color: "#071018",
+ borderRadius: "8px",
+ padding: "0.6rem 1rem",
+ fontFamily: "'Inter', sans-serif",
+ fontSize: "0.78rem", fontWeight: 700,
+ textAlign: "center", minWidth: "100px",
+ lineHeight: 1.4
+ }}>
+ <div>{label}</div>
+ <div style={{ fontWeight: 400, fontSize: "0.68rem", opacity: 0.75, marginTop: "2px" }}>{sub}</div>
+ </div>
+ </div>
+ {!isLast && (
+ <div style={{
+ flex: 1, height: "2px",
+ background: "linear-gradient(90deg, #00C2A8, #005F52)",
+ margin: "0 4px", minWidth: "20px"
+ }} />
+ )}
+ </div>
+ );
+
+const Requirement = ({ category, items }) => (
+ <div style={{
+ background: "#0F1923",
+ border: "1px solid #1E2D3D",
+ borderRadius: "10px",
+ padding: "1.25rem 1.5rem",
+ marginBottom: "0.75rem"
+ }}>
+ <div style={{
+ fontFamily: "'Inter', sans-serif",
+ fontWeight: 700, fontSize: "0.8rem",
+ color: "#00C2A8", marginBottom: "0.6rem",
+ letterSpacing: "0.05em", textTransform: "uppercase"
+ }}>{category}</div>
+ <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+ {items.map((item, i) => <Tag key={i}>{item}</Tag>)}
+ </div>
+ </div>
+ );
+
+export default function NeuroCareSubmission() {
+ const [copied, setCopied] = useState(false);
+
+ const handleCopy = () => {
+ const text = `
+ PROJECT TITLE: NeuroCare Edge
+ HACKATHON: Snapdragon Multiverse Hackathon — July 11–12, 2026
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PROBLEM STATEMENT
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Parkinson's Disease affects over 10 million people worldwide. Diagnosis today depends entirely on clinical observation — a neurologist watching a patient move. This means:
+ • Detection happens late, often years after neurons begin dying
+ • Continuous monitoring between appointments is impossible
+ • Caregivers have no real-time visibility into symptom severity
+ • Rural and underserved populations have almost no access to specialist care
+
+There is no affordable, continuous, at-home monitoring solution that can detect early tremor patterns and alert caregivers in real time.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PROPOSED SOLUTION: NeuroCare Edge
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ A distributed neurological disorder detection system that captures tremor and movement data from a wearable sensor, runs AI inference on edge/cloud hardware, and delivers real-time alerts to caregivers — across multiple devices simultaneously.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ SYSTEM ARCHITECTURE (4-Device Flow)
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ [Arduino + MPU-6050 Wearable]
+ ↓ Serial
+ [ESP32 — WiFi/MQTT Gateway]
+ ↓ MQTT over WiFi
+ [Qualcomm AI Cloud 100 — CNN-LSTM Inference]
+ ↓ REST API / WebSocket
+ [Windows Laptop Dashboard] + [Smartphone Caregiver Alert]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ KEY FEATURES
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ • Real-time tremor detection at 100Hz sampling rate
+ • AI classification of tremor vs. normal vs. bradykinesia
+ • Live waveform dashboard on Windows laptop
+ • Instant push notification to caregiver's smartphone
+ • Qualcomm AI Cloud 100 for high-performance edge inference
+ • Designed for patients in rural/low-resource settings
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TECHNICAL REQUIREMENTS
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Hardware: Arduino Uno, MPU-6050 (accelerometer/gyroscope), ESP32 Dev Board
+ Sensing: 3-axis accelerometer + gyroscope, 100Hz sampling, 4–8Hz tremor band detection
+ ML Model: CNN-LSTM classifier trained on UCI Parkinson's dataset
+ Features: RMS amplitude, variance, zero-crossing rate, dominant frequency
+ Connectivity: MQTT over WiFi (ESP32 → Cloud), Firebase FCM (Cloud → Phone)
+ Dashboard: React.js real-time waveform + classification display
+ Alerts: Firebase push notifications to Android/iOS caregiver app
+ Inference: Qualcomm AI Cloud 100 (Python + TensorFlow/ONNX)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ QUALCOMM / SNAPDRAGON RELEVANCE
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ • Core inference runs on Qualcomm AI Cloud 100
+ • Architecture designed for future deployment on Snapdragon-powered edge devices
+ • Demonstrates multi-device coordination across 4 platforms simultaneously
+ • Targets AI for social good in healthcare
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ IMPACT
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ • Early detection can slow disease progression through timely treatment
+ • Reduces dependency on frequent clinical visits
+ • Empowers caregivers with real-time data
+ • Affordable hardware (<₹1200 total sensor cost)
+ • Scalable to other neurological disorders (Essential Tremor, MS)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TEAM
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 4–5 member team with expertise in Python/ML, web development, and IoT systems.
+ `.trim();
+ navigator.clipboard.writeText(text).then(() => {
+ setCopied(true);
+ setTimeout(() => setCopied(false), 2500);
+ });
+ };
+
+ return (
+ <div style={{
+ minHeight: "100vh",
+ background: "#071018",
+ color: "#E8F4F1",
+ fontFamily: "'Inter', sans-serif",
+ padding: "2rem 1rem"
+ }}>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+ <div style={{ maxWidth: "820px", margin: "0 auto" }}>
+
+ {/* Header */}
+ <div style={{ marginBottom: "3rem", borderBottom: "1px solid #1E2D3D", paddingBottom: "2rem" }}>
+ <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+ <div>
+ <div style={{
+ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em",
+ textTransform: "uppercase", color: "#00C2A8", marginBottom: "0.5rem"
+ }}>
+ Snapdragon Multiverse Hackathon · July 11–12, 2026
+ </div>
+ <h1 style={{
+ margin: 0, fontSize: "clamp(1.8rem, 5vw, 2.8rem)",
+ fontWeight: 800, letterSpacing: "-0.03em",
+ lineHeight: 1.1, color: "#FFFFFF"
+ }}>
+ Neuro<span style={{ color: "#00C2A8" }}>Care</span> Edge
+ </h1>
+ <p style={{
+ margin: "0.6rem 0 0", fontSize: "1rem", color: "#8BA9BE",
+ fontWeight: 400, lineHeight: 1.5
+ }}>
+ Real-time Parkinson's tremor detection across distributed IoT devices
+ </p>
+ </div>
+ <button onClick={handleCopy} style={{
+ background: copied ? "#005F52" : "#00C2A8",
+ color: "#071018", border: "none", borderRadius: "8px",
+ padding: "0.6rem 1.2rem", fontWeight: 700, fontSize: "0.8rem",
+ cursor: "pointer", transition: "background 0.2s",
+ letterSpacing: "0.03em", flexShrink: 0
+ }}>
+ {copied ? "✓ Copied!" : "Copy as Text"}
+ </button>
+ </div>
+ </div>
+
+ {/* Problem */}
+ <Section label="Problem Statement">
+ <p style={{ fontSize: "0.92rem", color: "#B0C8D8", lineHeight: 1.8, margin: "0 0 1rem" }}>
+ Parkinson's Disease affects over <strong style={{ color: "#fff" }}>10 million people worldwide</strong>, yet diagnosis today depends entirely on clinical observation — a neurologist watching a patient move. This creates three critical gaps:
+ </p>
+ <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+ {[
+ { icon: "⏰", text: "Detection happens years after neurons begin dying" },
+ { icon: "🏥", text: "No monitoring between clinic appointments" },
+ { icon: "📵", text: "Caregivers have zero real-time visibility" },
+ { icon: "🌾", text: "Rural patients have almost no specialist access" },
+ ].map((p, i) => (
+ <div key={i} style={{
+ background: "#0F1923", border: "1px solid #1E2D3D",
+ borderRadius: "8px", padding: "0.8rem 1rem",
+ flex: "1 1 180px", display: "flex", gap: "0.6rem", alignItems: "flex-start"
+ }}>
+ <span style={{ fontSize: "1.1rem", flexShrink: 0 }}>{p.icon}</span>
+ <span style={{ fontSize: "0.8rem", color: "#8BA9BE", lineHeight: 1.5 }}>{p.text}</span>
+ </div>
+ ))}
+ </div>
+ </Section>
+
+ {/* Solution */}
+ <Section label="Proposed Solution">
+ <p style={{ fontSize: "0.92rem", color: "#B0C8D8", lineHeight: 1.8, margin: "0 0 1rem" }}>
+ NeuroCare Edge is a <strong style={{ color: "#fff" }}>distributed neurological monitoring system</strong> that captures tremor data from a wrist-worn sensor, runs AI-powered classification on Qualcomm AI Cloud 100, and delivers instant alerts to caregivers — across four devices simultaneously.
+ </p>
+ </Section>
+
+ {/* Architecture Flow */}
+ <Section label="System Architecture">
+ <div style={{
+ background: "#0F1923", border: "1px solid #1E2D3D",
+ borderRadius: "10px", padding: "1.5rem",
+ overflowX: "auto"
+ }}>
+ <div style={{ display: "flex", alignItems: "center", minWidth: "560px" }}>
+ <FlowStep label="Arduino + MPU-6050" sub="Wearable Sensor" />
+ <FlowStep label="ESP32" sub="WiFi Gateway" />
+ <FlowStep label="Qualcomm AI Cloud 100" sub="CNN-LSTM Inference" />
+ <FlowStep label="Laptop + Phone" sub="Dashboard & Alerts" isLast />
+ </div>
+ <div style={{
+ display: "flex", gap: "1rem", marginTop: "1rem",
+ flexWrap: "wrap", minWidth: "560px"
+ }}>
+ {["Serial UART", "MQTT over WiFi", "REST API / WebSocket", "Firebase FCM Push"].map((p, i) => (
+ <div key={i} style={{
+ flex: "1 1 120px", textAlign: "center",
+ fontSize: "0.65rem", color: "#456070",
+ fontWeight: 600, letterSpacing: "0.04em"
+ }}>{p}</div>
+ ))}
+ </div>
+ </div>
+ </Section>
+
+ {/* Key Features */}
+ <Section label="Key Features">
+ <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+ <Card icon="📡" title="100Hz Real-Time Sensing" items={[
+ "MPU-6050 captures X/Y/Z acceleration & gyroscope",
+ "4–8Hz tremor band detection",
+ "Feature extraction: RMS, variance, ZCR, frequency"
+ ]} />
+ <Card icon="🧠" title="AI Tremor Classification" items={[
+ "CNN-LSTM model trained on UCI Parkinson's dataset",
+ "Classifies: Normal / Tremor / Bradykinesia",
+ "Runs on Qualcomm AI Cloud 100"
+ ]} />
+ <Card icon="🔔" title="Multi-Device Output" items={[
+ "Live waveform dashboard on Windows laptop",
+ "Instant Firebase push alert to caregiver phone",
+ "4-device coordination simultaneously"
+ ]} />
+ </div>
+ </Section>
+
+ {/* Technical Requirements */}
+ <Section label="Technical Requirements">
+ <Requirement category="Hardware" items={["Arduino Uno R3", "MPU-6050 Sensor", "ESP32 Dev Board", "Jumper Wires", "USB Cable"]} />
+ <Requirement category="ML / AI" items={["CNN-LSTM Model", "UCI Parkinson's Dataset", "TensorFlow / ONNX", "Qualcomm AI Cloud 100", "Feature Engineering"]} />
+ <Requirement category="Connectivity" items={["MQTT Protocol", "WiFi (ESP32)", "Firebase FCM", "REST API", "WebSocket"]} />
+ <Requirement category="Software" items={["Python (Flask)", "React.js Dashboard", "Arduino IDE", "Firebase", "PubSubClient", "ArduinoJson"]} />
+ </Section>
+
+ {/* Qualcomm Relevance */}
+ <Section label="Snapdragon / Qualcomm Relevance">
+ <div style={{
+ background: "linear-gradient(135deg, #00C2A810, #071018)",
+ border: "1px solid #00C2A830",
+ borderRadius: "10px", padding: "1.25rem 1.5rem"
+ }}>
+ <ul style={{ margin: 0, paddingLeft: "1.2rem" }}>
+ {[
+ "Core AI inference runs on Qualcomm AI Cloud 100",
+ "Architecture designed for future Snapdragon edge device deployment",
+ "Demonstrates multi-device coordination across 4 platforms",
+ "AI for Social Good — healthcare in underserved populations",
+ "Scalable to Snapdragon-powered wearables for production"
+ ].map((item, i) => (
+ <li key={i} style={{
+ fontSize: "0.85rem", color: "#B0C8D8",
+ marginBottom: "0.5rem", lineHeight: 1.6
+ }}>{item}</li>
+ ))}
+ </ul>
+ </div>
+ </Section>
+
+ {/* Impact */}
+ <Section label="Impact & Scalability">
+ <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+ {[
+ { stat: "10M+", label: "People affected by Parkinson's globally" },
+ { stat: "< ₹1200", label: "Total sensor hardware cost" },
+ { stat: "~90%", label: "Detection accuracy achievable with CNN-LSTM" },
+ { stat: "24/7", label: "Continuous monitoring vs. periodic clinic visits" },
+ ].map((s, i) => (
+ <div key={i} style={{
+ background: "#0F1923", border: "1px solid #1E2D3D",
+ borderRadius: "10px", padding: "1.1rem 1.25rem",
+ flex: "1 1 160px", textAlign: "center"
+ }}>
+ <div style={{
+ fontSize: "1.6rem", fontWeight: 800,
+ color: "#00C2A8", letterSpacing: "-0.02em"
+ }}>{s.stat}</div>
+ <div style={{
+ fontSize: "0.75rem", color: "#8BA9BE",
+ marginTop: "0.3rem", lineHeight: 1.4
+ }}>{s.label}</div>
+ </div>
+ ))}
+ </div>
+ </Section>
+
+ {/* Footer */}
+ <div style={{
+ borderTop: "1px solid #1E2D3D", paddingTop: "1.5rem",
+ display: "flex", justifyContent: "space-between",
+ alignItems: "center", flexWrap: "wrap", gap: "0.5rem"
+ }}>
+ <span style={{ fontSize: "0.75rem", color: "#456070" }}>
+ NeuroCare Edge · Snapdragon Multiverse Hackathon · Qualcomm Building N, Bengaluru
+ </span>
+ <span style={{ fontSize: "0.75rem", color: "#456070" }}>
+ Team: 4–5 members · Python / ML / Web Dev
+ </span>
+ </div>
+
+ </div>
+ </div>
+ );
+ }
